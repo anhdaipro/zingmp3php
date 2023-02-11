@@ -1,0 +1,13 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class PostMedia extends Model
+{
+    use HasFactory;
+    protected $table = 'post_medias';
+    protected $fillable = ['post_id','file','file_preview','duration'];
+}

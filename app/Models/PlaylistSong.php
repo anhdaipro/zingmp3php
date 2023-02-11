@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class PlaylistSong extends Model
+{
+    use HasFactory;
+    protected $table = 'playlist_songs';
+    protected $fillable = ['song_id','playlist_id'];
+    public function playlists(){
+        return $this->belongsTo(Playlist::class);
+    }
+    public function song(){
+        return $this->belongsTo(Song::class);
+    }
+}

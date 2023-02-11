@@ -1,0 +1,45 @@
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\Artist;
+use App\Http\Resources\ArtistinfoResource;
+use App\Http\Resources\ArtistResource;
+use App\Http\Resources\ArtistsResource;
+class ArtistController extends Controller
+{
+    public function artists(){
+        $artists =ArtistinfoResource::collection(Artist::with(['user','followers'])->offset(0)->limit(10)->get());
+        return response()->json($artists);
+    }
+    public function artist($id){
+        $artist =new ArtistResource(Artist::find($id));
+        return response()->json($artist);
+    }
+    public function artistinfo($id){
+        $artist=new ArtistsResource(Artist::find($id));
+        return response()->json($artist);
+    }
+    public function actionartist(Request $request,$id){
+        $artist=Artist::find($id);
+        $action=$request->get('action');
+        if ($action=='follow'){
+            if ($artist->followed()->exist()){
+                $artist->followed()->delete();
+            }
+            else{
+                ArtistFollower::create([
+                    'user_id'=>auth()->user()->id,
+                    'artist_id'=>$id
+                ]);
+            }
+        }
+        else{
+            $name=$request->get('name');
+            $description=$request->get('description');
+        }
+        return response()->json(['succes'=>true]);
+    }
+}
