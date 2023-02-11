@@ -46,5 +46,8 @@ class Song extends Model
     public function album(){
         return $this->belongsTo(Album::class);
     }
+    public function mv(){
+        return $this->belongsTo(Mv::class);
+    }
     
 }

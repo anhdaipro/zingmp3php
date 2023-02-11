@@ -5,6 +5,7 @@ use App\Models\Playlist;
 use App\Models\PlaylistSong;
 use App\Models\PlaylistLiker;
 use App\Models\Comment;
+use App\Models\Artist;
 use App\Models\SharePlaylist;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -17,7 +18,8 @@ class PlaylistController extends Controller
         return response()->json($playlists);
     }
     public function playlist($id){
-        return new PlaylistsResource(Arist::find($id));
+        $playlist= new PlaylistResource(Artist::find($id));
+        return response()->json($playlist);
     }
     public function addplaylist(Request $request){
         $playlist=Playlist::create([

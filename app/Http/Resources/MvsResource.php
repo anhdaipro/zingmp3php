@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Resources;
-use APp\Models\MvLiker;
+use App\Models\MvLiker;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Controllers\Api\UserController;
 class MvsResource extends JsonResource
@@ -22,7 +22,7 @@ class MvsResource extends JsonResource
             'file_preview'=>$this->file_preview,
             'duration'=>$this->duration
         ];
-        $liked=MvLiker::where([['mv_id',$this->id],['user_id',$user_id]])->exists()?true:false;
+        $liked=$this->liked()->exists()?true:false;
         $array['liked']=$liked;
         return $array;
     }

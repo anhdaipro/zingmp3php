@@ -45,13 +45,13 @@ Route::get('v1/lyric', [SongController::class,'get_lyrics']);
 Route::get('v1/user/songs', [SongController::class,'songuser']);
 Route::post('v1/songs/update', [SongController::class,'update']);
 #video
-Route::get('v1/video', [MvController::class,'mv']);
+Route::get('v1/mv', [MvController::class,'mv']);
 Route::get('v1/listmv', [MvController::class,'listmv']);
-Route::post('v1/uploadvideo', [MvController::class,'uploadmv']);
-Route::post('v1/video/{id}', [MvController::class,'actionmv']);
+Route::post('v1/upload/video', [MvController::class,'uploadmv']);
+Route::post('v1/mv/{id}', [MvController::class,'actionmv']);
 
 #artist
-Route::get('v1/artist/{id}', [ArtistController::class,'artist']);
+Route::get('v1/artist/{slug}', [ArtistController::class,'artist']);
 Route::get('v1/artists', [ArtistController::class,'artists']);
 Route::post('v1/artist/{id}', [ArtistController::class,'actionartist']);
 Route::get('v1/artistinfo', [ArtistController::class,'artistinfo']);

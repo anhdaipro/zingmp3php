@@ -33,9 +33,7 @@ class PostController extends Controller
         else if($choice=='cpop'){
             $country=4;
         }
-        $posts=Post::with('files')->with(['artist'=>function($query) use($country){
-            $query->where('country',$country);
-        },'likers','comments'])->limit(10)->get();
+        $posts=Post::with('files')->whereRelation('artist','country',$country)->with(['artist','likers','comments'])->limit(10)->get();
         $data=PostsResource::collection($posts);
         return response()->json($data);
     }
@@ -54,9 +52,9 @@ class PostController extends Controller
         $post=Post::create(['caption'=>$caption,'artist_id'=>auth()->user()->artist->id]);
         $filepost=new PostMedia();
         if($file_preview){
-            $filepost->file_preview=$file_preview->store('api');
+            $filepost->file_preview=cloudinary()->upload($request->file('file_preview')->getRealPath())->getSecurePath();
         }
-        $filepost->file=$file->store('api');
+        $filepost->file=cloudinary()->uploadVideo($request->file('file')->getRealPath())->getSecurePath();
         $filepost->post_id=$post->id;
         $filepost->save();
         return response()->json(['file'=>$filepost->file]);

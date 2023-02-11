@@ -16,4 +16,7 @@ class PlaylistSong extends Model
     public function song(){
         return $this->belongsTo(Song::class);
     }
+    public function artist(){
+        return $this->belongsTo(Artist::class);
+    }
 }

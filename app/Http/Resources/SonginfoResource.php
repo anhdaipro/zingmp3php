@@ -27,7 +27,7 @@ class SonginfoResource extends JsonResource
             'hasLyric'=>$this->hasLyric,
             'hasKaraoke'=>$this->hasKaraoke,
             'created_at'=>$this->created_at,
-            'video'=>$this->mv
+            'mv'=>$this->mv_id
         ];
         return $array;
     }

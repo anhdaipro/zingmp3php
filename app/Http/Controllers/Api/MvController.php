@@ -1,54 +1,54 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Resource\MvResource;
+use App\Http\Resources\MvsResource;
+use App\Http\Resources\MvResource;
 use App\Models\Song;
 use App\Models\Mv;
 use App\Models\MvView;
 use App\Models\MvLiker;
 class MvController extends Controller
 {
-    public function video(){
-        $id=$request->get('id')
+    public function mv(Request $request){
+        $id=$request->get('id');
         $mv=new  MvsResource(Mv::find($id));
         return response()->json($mv);
     }
     function actionmv(Request $request,$id){
         $action=$request->get('action');
         $data=[];
-        $mv=Mv::find($id)
+        $mv=Mv::find($id);
         if ($action=='delete'){
             $mv->delete();
         }
         else if ($action=='view'){
-            MvViews::create(['user_id'=>$user_id,'mv_id'=>$id]);
+            MvView::create(['user_id'=>auth()->user()->id,'mv_id'=>$id]);
         }
         else if ($action=='like'){
             $liked=False;
-            if $mv->likers->exists():
-                $mv->likers->delete();
-            else:
-                MvLiker::create(['user_id'=>auth()->user(),'mv_id'=>$id]);
+            if ($mv->liked()->exists())
+                $mv->liked()->delete();
+            else{
+                MvLiker::create(['user_id'=>auth()->user()->id,'mv_id'=>$id]);
                 $liked=True;
             }
             $data['liked']=$liked;
             $data['count_likers']=$mv->likers()->count();
         }
         else if ($action=='comment'){
-            $comment=Comment::create(['user_id'=>$user_id,'mv_id'=>$id,'body'=>$request->get('body')]);
-            $data[]=$comment->attributesToArray();
+            $comment=Comment::create(['user_id'=>auth()->user()->id,'mv_id'=>$id,'body'=>$request->get('body')]);
+            $data=$comment;
         }
         else{
-            ShareMv::create(['user_id'=>$user_id,'provider'=>$request->get('provider'),'mv_id'=>$id]);
+            ShareMv::create(['user_id'=>auth()->user()->id,'provider'=>$request->get('provider'),'mv_id'=>$id]);
         }
         return response()->json($data);  
         
     }
     function listmv(){
-        $songs=Song::whereNotNull('mv')->get();
+        $songs=Song::whereNotNull('mv_id')->get();
         $data=MvResource::collection($songs);
         return response()->json($data);  
     }
@@ -58,8 +58,8 @@ class MvController extends Controller
         $name=$request->get('name');
         $duration=$request->get('duration');
         Mv::create([
-            'file'=>$file->store('api'),
-            'file_preview'=>$file_preview->store('api'),
+            'file'=>cloudinary()->uploadVideo($request->file('file')->getRealPath())->getSecurePath(),
+            'file_preview'=>cloudinary()->upload($request->file('file_preview')->getRealPath())->getSecurePath(),
             'name'=>$name,
             'duration'=>$duration,
         ]);

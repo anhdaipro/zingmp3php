@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 use App\Models\Comment;
-use App\Models\LikerComment;
-use App\Models\DislikerComment;
+use App\Models\CommentLiker;
+use App\Models\CommentDisliker;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Resources\CommentResource;
@@ -34,7 +34,7 @@ class CommentController extends Controller
                 $comment->liked()->delete();
             }
             else{
-                LikerComment::create([
+                CommentLiker::create([
                     'comment_id'=>$id,
                     'user_id'=>$user_id
                 ]);
@@ -48,7 +48,7 @@ class CommentController extends Controller
                 $comment->liked()->delete();
             }
             else{
-                DislikerComment::create([
+                CommentDisliker::create([
                     'comment_id'=>$id,
                     'user_id'=>$user_id
                 ]);

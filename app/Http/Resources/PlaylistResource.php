@@ -3,8 +3,8 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Resources\UserResource;
-class PlaylistResource extends JsonResource
+use App\Models\Song;
+class PlaylistResource extends PlaylistsResource
 {
     /**
      * Transform the resource into an array.
@@ -17,7 +17,7 @@ class PlaylistResource extends JsonResource
         $parent= parent::toArray($request);
         $array=[
             'user'=>new UserResource($this->user),
-            'songs'=>SongsResource::collection($this->songs->get())
+            'songs'=>SongsResource::collection(Song::whereRelation('playlists', 'playlist_id', $this->id)->get())
         ];
         return array_merge($parent,$array);
     }

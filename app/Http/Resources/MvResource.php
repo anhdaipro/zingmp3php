@@ -16,8 +16,8 @@ class MvResource extends SonginfoResource
     {
         $parent= parent::toArray($request);
         $array=[
-            'mv'=>new MvsResource($this->mv_id),
-            'user'=>new UserinfoResource($this->user_id)
+            'mv'=>new MvsResource($this->mv),
+            'user'=>new UserResource($this->user),
         ];
         return array_merge($parent,$array);
     }

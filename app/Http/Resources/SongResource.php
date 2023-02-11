@@ -18,6 +18,7 @@ class SongResource extends JsonResource
             'lyrics'=>$this->lyrics,
             'sentences'=>$this->sentences,
             'count_views'=>$this->views->count(),
+            'mv'=>$this->mv_id,
             'count_comment'=>$this->comments->count(),
         ];
         
