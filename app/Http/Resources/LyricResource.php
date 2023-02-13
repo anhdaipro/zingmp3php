@@ -15,7 +15,7 @@ class LyricResource extends JsonResource
     public function toArray($request)
     {
         $array=[
-            'lyrics'=>$this->lyrics,
+            'lyrics'=>json_decode($this->lyrics,true),
             'sentences'=>json_decode($this->sentences,true),
         ];
         return $array;
