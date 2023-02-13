@@ -9,6 +9,7 @@ use App\Models\Song;
 use App\Models\Mv;
 use App\Models\MvView;
 use App\Models\MvLiker;
+use App\Models\MvShare;
 class MvController extends Controller
 {
     public function mv(Request $request){
@@ -42,7 +43,7 @@ class MvController extends Controller
             $data=$comment;
         }
         else{
-            ShareMv::create(['user_id'=>auth()->user()->id,'provider'=>$request->get('provider'),'mv_id'=>$id]);
+            MvShare::create(['user_id'=>auth()->user()->id,'provider'=>$request->get('provider'),'mv_id'=>$id]);
         }
         return response()->json($data);  
         
@@ -63,6 +64,13 @@ class MvController extends Controller
             'name'=>$name,
             'duration'=>$duration,
         ]);
+        return response()->json(['success'=>true]);  
+    }
+    function insertmv(Request $request){
+        $id=$request->get('id');
+        $mv_id=$request->get('mv_id');
+        Song::where('id',$id)->update(['mv_id'=>$mv_id]);
+        
         return response()->json(['success'=>true]);  
     }
 }

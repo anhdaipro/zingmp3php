@@ -50,7 +50,7 @@ Route::get('v1/mv', [MvController::class,'mv']);
 Route::get('v1/listmv', [MvController::class,'listmv']);
 Route::post('v1/upload/video', [MvController::class,'uploadmv']);
 Route::post('v1/mv/{id}', [MvController::class,'actionmv']);
-
+Route::post('v1/mvs/insert', [MvController::class,'insertmv']);
 #artist
 Route::get('v1/artist/{slug}', [ArtistController::class,'artist']);
 Route::get('v1/artists', [ArtistController::class,'artists']);
