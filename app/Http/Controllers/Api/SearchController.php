@@ -23,23 +23,18 @@ class SearchController extends Controller
     public function searchitem(Request $request){
         $keyword=$request->get('keyword');
         $choice=$request->get('choice');
+        $offset=$request->get('offset');
         $data=[];
-        $songs=Song::with(['album','likers','artists'])->whereHas('artists',function($query) use($keyword){
-            $query->whereHas('artist',function($query) use($keyword){
-                $query->where('name','like',$keyword.'%');
-            });
-        })->orWhere('name','like',$keyword.'%')->distinct()->get();
-        $artists=Artist::with(['songs.song'])->whereHas('songs',function($query) use($keyword){
-            $query->whereHas('song',function($query) use($keyword){
-                $query->where('name','like',$keyword.'%');
-            });
-        })->orWhere('name','like',$keyword.'%')->distinct()->get();
+        $songs=Song::with(['album','likers','artists'])->whereHas('artists.artist',function($query) use($keyword){
+            $query->where('name','like',$keyword.'%');
+        })->orWhere('name','like',$keyword.'%')->distinct()->limit(6)->get();
+        $artists=Artist::withwhereHas('songs',function($query) use($keyword){
+            $query->where('name','like',$keyword.'%');
+        })->orWhere('name','like',$keyword.'%')->distinct()->limit(4)->get();
         
-        $playlists=Playlist::with(['songs.song'])->whereHas('songs',function($query) use($keyword){
-            $query->whereHas('song',function($query) use($keyword){
-                $query->where('name','like',$keyword.'%');
-            });
-        })->orWhere('name','like',$keyword.'%')->distinct()->get();
+        $playlists=Playlist::withwhereHas('songs.song',function($query) use($keyword){
+            $query->where('name','like',$keyword.'%');
+        })->orWhere('name','like',$keyword.'%')->distinct()->limit(4)->get();
         $combilesongs=$songs;
         $combileartists=$artists;
         $combileplaylists=$playlists;
