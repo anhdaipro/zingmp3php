@@ -24,18 +24,18 @@ class SearchController extends Controller
         $keyword=$request->get('keyword');
         $choice=$request->get('choice');
         $data=[];
-        $songs=Song::whereHas('artists',function($query) use($keyword){
+        $songs=Song::with(['album','likers','artists'])->whereHas('artists',function($query) use($keyword){
             $query->whereHas('artist',function($query) use($keyword){
                 $query->where('name','like',$keyword.'%');
             });
         })->orWhere('name','like',$keyword.'%')->distinct()->get();
-        $artists=Artist::whereHas('songs',function($query) use($keyword){
+        $artists=Artist::with(['songs.song'])->whereHas('songs',function($query) use($keyword){
             $query->whereHas('song',function($query) use($keyword){
                 $query->where('name','like',$keyword.'%');
             });
         })->orWhere('name','like',$keyword.'%')->distinct()->get();
         
-        $playlists=Playlist::whereHas('songs',function($query) use($keyword){
+        $playlists=Playlist::with(['songs.song'])->whereHas('songs',function($query) use($keyword){
             $query->whereHas('song',function($query) use($keyword){
                 $query->where('name','like',$keyword.'%');
             });
