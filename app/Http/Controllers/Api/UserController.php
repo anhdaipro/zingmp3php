@@ -56,7 +56,7 @@ class UserController extends Controller
         $username=$request->get('username');
         $email=$request->get('email');
         $password=$request->get('password');
-        $avatar=cloudinary()->upload($request->file('avatar')->getRealPath())->getSecurePath();
+        $avatar=$request->file('avatar');
         $data=[];
         $users=User::where([['social_id',$social_id],['provider',$provider]]);
         if ($users->exists()){
@@ -65,10 +65,17 @@ class UserController extends Controller
             $data=$this->createNewToken($token);
         }
         else{
-            $user=User::create([
-                'name'=>$name,'username'=>$username,'social_id'=>$social_id,
-                'email'=>$email,'auth_provider'=>$provider,'password'=>bcrypt($request->get('password'))
-            ]);
+            $user= new User();
+            $user->name=$name;
+            $user->username=$username;
+            $user->email=$email;
+            $user->provider=$provider;
+            $user->social_id=$social_id;
+            $user->password=bcrypt($request->get('password'));
+            if($avatar){
+                $user->avatar=cloudinary()->upload($avatar->getRealPath())->getSecurePath();
+            }
+            $user->save();
             $token = auth()->login($user);
             $data=$this->createNewToken($token);
         }
