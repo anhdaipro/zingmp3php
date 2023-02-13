@@ -46,7 +46,7 @@ class UserController extends Controller
             return $this->createNewToken($token);
         }
         catch(\Exception $e){
-            return response()->json(['error'=>true,'message'->e.getMessage()])
+            return response()->json(['error'=>true,'message'->e.getMessage()]);
         }
     }
     public function logout()
