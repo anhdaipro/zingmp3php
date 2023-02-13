@@ -109,7 +109,7 @@ class UserController extends Controller
         return response()->json($user);
     }
     public function update(Request $request){
-        $user=auth()->user;
+        $user=auth()->user();
         $avatar=$request->file('avatar');
         if($avatar){
             $user->avatar=cloudinary()->upload($avatar->getRealPath())->getSecurePath();
