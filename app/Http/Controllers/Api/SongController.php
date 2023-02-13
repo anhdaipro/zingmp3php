@@ -67,15 +67,15 @@ class SongController extends Controller
     public function store(Request $request)
     {
         try{
-        $song=new Song();
-        $song->name=$request->get('song_name');
-        $song->user_id=auth()->user()->id;
-        $song->artist_name=$request->get('artist_name');
-        $song->duration=$request->get('duration');
-        $song->file=cloudinary()->uploadVideo($request->file('file')->getRealPath())->getSecurePath();
-        $song->slug=Str::slug($request->get('name'));
-        $song->viewer=1;
-        $song->country=1;
+            $song=new Song();
+            $song->name=$request->get('song_name');
+            $song->user_id=auth()->user()->id;
+            $song->artist_name=$request->get('artist_name');
+            $song->duration=$request->get('duration');
+            $song->file=cloudinary()->uploadVideo($request->file('file')->getRealPath())->getSecurePath();
+            $song->slug=Str::slug($request->get('song_name'));
+            $song->viewer=1;
+            $song->country=1;
         if($request->has('image_cover')){
             $song->image_cover=cloudinary()->upload($request->file('image_cover')->getRealPath())->getSecurePath();
         }
@@ -94,6 +94,15 @@ class SongController extends Controller
             $song->album_id=$album->id;
         }
         $song->save();
+        $artist= Artist::firstOrCreate(
+            ['user_id'=>auth()=>user()->id],
+            ['slug' => Str::slug($request.get('artist_name'))],
+            ['name' => $request.get('artist_name')]
+        );
+        SongArtist::firstOrCreate(
+            ['song_id' => $song->id],
+            ['artist_id' =>$artist->id]
+        );
         return response()->json([
             'status'=> 200,
             'message'=> 'Song created successfully',  
