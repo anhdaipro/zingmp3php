@@ -108,6 +108,17 @@ class UserController extends Controller
         $user=new UserResource(User::find($this->getAuthenticatedUser()));
         return response()->json($user);
     }
+    public function update(Request $request){
+        $user=auth()->user;
+        $avatar=$request->file('avatar');
+        if($avatar){
+            $user->avatar=cloudinary()->upload($avatar->getRealPath())->getSecurePath();
+        }
+        $name=$request->get('name');
+        $user->name=$name;
+        $user->save();
+        return response()->json(['success'=>true]);
+    }
     protected function createNewToken($token){
         return response()->json([
             'access' => $token,
