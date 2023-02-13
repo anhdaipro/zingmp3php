@@ -17,6 +17,7 @@ use App\Http\Resources\SongResource;
 use App\Http\Resources\SongsResource;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\CommentResource;
+use App\Http\Resources\LyricResource;
 use Illuminate\Support\Facades\Cache;
 
 class SongController extends Controller
@@ -110,7 +111,6 @@ class SongController extends Controller
             $data=['sucess'=>true];
             $user=new UserController();
             $user_id=$user->getAuthenticatedUser();
-            
             if ($action=='view'){
                 View::create(['song_id'=>$id,'user_id'=>$user_id]);
             }
@@ -169,7 +169,7 @@ class SongController extends Controller
         return response()->json(Song::select('file')->find($id));
     }
     public function get_lyrics(Request $request){
-        return response()->json(Song::select('lyrics','sentences')->find($request->get('id')));
+        return new LyricResource(Song::find($request->get('id')));
     }
     public function songuser(Request $request){
         try{
@@ -212,23 +212,15 @@ class SongController extends Controller
     }
 
     public function updatelyric(Request $request){
-        $songs = $request->get('songs');
+        $id = $request->get('id');
         $data=[];
+        $item=Song::where('id',$id)->first();
         
-        foreach ($songs as  $song) {
-
-            $item=Song::where('sentences')->update(['hasKaraoke'=>1]);
-            if ($item){
-                $item->hasLyric = $song['hasLyric'];
-                $item->hasKaraoke = $song['hasKaraoke'];
-                $item->lyrics = $song['lyrics'];
-                $item->sentences= $song['sentences'];
-                $item->save();
-            }
-        }
-       
+        $item->sentences= $request->get('sentences');
+        $item->save();
+            
         
-        return response()->json(['sucess'=>true]);
+        return response()->json(['sucess'=>true,]);
     }
     /**
      * Remove the specified resource from storage.
