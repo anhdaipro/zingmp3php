@@ -66,11 +66,9 @@ class SongController extends Controller
     public function store(Request $request)
     {
         try{
-        $user=new UserController();
-        $user_id=$user->getAuthenticatedUser();
         $song=new Song();
         $song->name=$request->get('song_name');
-        $song->user_id=$user_id;
+        $song->user_id=auth()->user->id;
         $song->artist_name=$request->get('artist_name');
         $song->duration=$request->get('duration');
         $song->file=cloudinary()->uploadVideo($request->file('file')->getRealPath())->getSecurePath();
