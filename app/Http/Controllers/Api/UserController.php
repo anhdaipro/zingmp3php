@@ -28,17 +28,26 @@ class UserController extends Controller
     }
     
     public function login(Request $request){
-    	$validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'password' => 'required|string|min:6',
-        ]);
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
+        try{
+            $data=$request->has('username')?[
+                'username' => 'required|string|min:6',
+                'password' => 'required|string|min:6',
+            ]:[
+                'email' => 'required|email',
+                'password' => 'required|string|min:6',
+            ];
+            $validator = Validator::make($request->all(), $data);
+            if ($validator->fails()) {
+                return response()->json($validator->errors(), 422);
+            }
+            if (! $token = auth()->attempt($validator->validated())) {
+                return response()->json(['error' => 'Unauthorized'], 401);
+            }
+            return $this->createNewToken($token);
         }
-        if (! $token = auth()->attempt($validator->validated())) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        catch(\Exception $e){
+            return response()->json(['error'=>true,'message'->e.getMessage()])
         }
-        return $this->createNewToken($token);
     }
     public function logout()
     {
