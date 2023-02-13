@@ -51,6 +51,10 @@ class MvController extends Controller
     function listmv(Request $request){
         $choice=$request->get('choice');
         $country=1;
+        $offset=0;
+        if($request->has("offset")){
+            $offset=$request->get('offset');
+        }
         if($choice=='usuk'){
             $country=2;
         }
@@ -60,7 +64,7 @@ class MvController extends Controller
         else if($choice=='cpop'){
             $country=4;
         }
-        $songs=Song::whereNotNull('mv_id')->where("country",$country)->get();
+        $songs=Song::whereNotNull('mv_id')->where("country",$country)->offset($offset)->limit(12)->get();
         $data=MvResource::collection($songs);
         return response()->json($data);  
     }

@@ -64,7 +64,12 @@ class CommentController extends Controller
     }
     public function comments(Request $request){
         $query=Comment::with(['user','likers','dislikers'])->where('post_id',$request->get('post_id'));
-        $comments=CommentResource::collection($query->get());
+        $offset=0;
+        if($request->has("offset")){
+            $offset=$request->get('offset');
+        }
+        $comments=CommentResource::collection($query->offset($offset)->limit(12)->get());
         return response()->json(['comments'=>$comments,'count'=>$query->count()]);
     }
+    
 }

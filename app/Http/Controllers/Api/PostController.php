@@ -23,6 +23,10 @@ class PostController extends Controller
     public function posts(Request $request)
     {
         $choice=$request->get('choice');
+        $offset=0;
+        if($request->has("offset")){
+            $offset=$request->get('offset');
+        }
         $country=1;
         if($choice=='usuk'){
             $country=2;
@@ -33,9 +37,10 @@ class PostController extends Controller
         else if($choice=='cpop'){
             $country=4;
         }
-        $posts=Post::with(['artist','likers','comments','files'])->whereRelation('artist','country',$country)->limit(10)->get();
+        $query=Post::with(['artist','likers','comments','files'])->whereRelation('artist','country',$country);
+        $posts=$query->offset($offset)->limit(10)->get();
         $data=PostsResource::collection($posts);
-        return response()->json($data);
+        return response()->json(['posts'=>$data,'count'=>$query->count()]);
     }
 
     /**
