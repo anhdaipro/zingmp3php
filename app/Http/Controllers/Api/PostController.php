@@ -54,7 +54,7 @@ class PostController extends Controller
         if($file_preview){
             $filepost->file_preview=cloudinary()->upload($request->file('file_preview')->getRealPath())->getSecurePath();
         }
-        $filepost->file=cloudinary()->uploadVideo($request->file('file')->getRealPath())->getSecurePath();
+        $filepost->file=cloudinary()->uploadFile($request->file('file')->getRealPath())->getSecurePath();
         $filepost->post_id=$post->id;
         $filepost->save();
         return response()->json(['file'=>$filepost->file]);
