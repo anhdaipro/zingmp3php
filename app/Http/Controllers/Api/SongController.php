@@ -95,7 +95,7 @@ class SongController extends Controller
         }
         $song->save();
         $artist= Artist::firstOrCreate(
-            ['user_id'=>auth()=>user()->id],
+            ['user_id'=>auth()->user()->id],
             ['slug' => Str::slug($request.get('artist_name'))],
             ['name' => $request.get('artist_name')]
         );
