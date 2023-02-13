@@ -28,11 +28,11 @@ class SearchController extends Controller
         $songs=Song::with(['album','likers','artists'])->whereHas('artists.artist',function($query) use($keyword){
             $query->where('name','like',$keyword.'%');
         })->orWhere('name','like',$keyword.'%')->distinct()->limit(6)->get();
-        $artists=Artist::withwhereHas('songs',function($query) use($keyword){
+        $artists=Artist::withWhereHas('songs',function($query) use($keyword){
             $query->where('name','like',$keyword.'%');
         })->orWhere('name','like',$keyword.'%')->distinct()->limit(4)->get();
         
-        $playlists=Playlist::withwhereHas('songs.song',function($query) use($keyword){
+        $playlists=Playlist::withWhereHas('songs.song',function($query) use($keyword){
             $query->where('name','like',$keyword.'%');
         })->orWhere('name','like',$keyword.'%')->distinct()->limit(4)->get();
         $combilesongs=$songs;
