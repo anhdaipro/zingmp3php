@@ -48,8 +48,19 @@ class MvController extends Controller
         return response()->json($data);  
         
     }
-    function listmv(){
-        $songs=Song::whereNotNull('mv_id')->get();
+    function listmv(Request $request){
+        $choice=$request->get('choice');
+        $country=1;
+        if($choice=='usuk'){
+            $country=2;
+        }
+        else if($choice=='kpop'){
+            $country=3;
+        }
+        else if($choice=='cpop'){
+            $country=4;
+        }
+        $songs=Song::whereNotNull('mv_id')->where("country",$country)->get();
         $data=MvResource::collection($songs);
         return response()->json($data);  
     }
