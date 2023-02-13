@@ -27,6 +27,8 @@ class SearchController extends Controller
         $data=[];
         $songs=Song::with(['album','likers'])->withWhereHas('artists.artist',function($query) use($keyword){
             $query->where('name','like',$keyword.'%');
+        })->withWhereHas('playlists.playlist',function($query) use($keyword){
+            $query->where('name','like',$keyword.'%');
         })->orWhere('name','like',$keyword.'%')->distinct()->limit(6)->get();
         $artists=Artist::withWhereHas('songs',function($query) use($keyword){
             $query->where('name','like',$keyword.'%');
