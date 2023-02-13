@@ -37,7 +37,9 @@ class SongController extends Controller
         if($request->has("offset")){
             $offset=$request->get('offset');
         }
-        $songs=SongsResource::collection(Song::with(['album','likers','artists'])->where('created_at','>',date("Y-m-d",strtotime("-30 day")))->offset($offset)->limit(20)->get());
+        $newsongs=Song::with(['album','likers','artists'])->where('created_at','>',date("Y-m-d",strtotime("-30 day")));
+        $count=$newsongs->count();
+        $songs=$newsongs->offset($offset)->limit(20)->get();
         if($request->has('filter')){
             $country=1;
             if($request->get('filter')=='vpop'){
@@ -55,7 +57,7 @@ class SongController extends Controller
            
             $songs=$songs->where('country',$country);
         }
-        return response()->json($songs);
+        return response()->json(['songs'=>SongsResource::collection($songs),'count'=>$count]);
     }
     /**
      * Store a newly created resource in storage.
