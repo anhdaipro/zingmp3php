@@ -169,7 +169,7 @@ class SongController extends Controller
         return response()->json(Song::select('file')->find($id));
     }
     public function get_lyrics(Request $request){
-        return new LyricResource(Song::find($request->get('id')));
+        return response()->json(new LyricResource(Song::find($request->get('id'))));
     }
     public function songuser(Request $request){
         try{
