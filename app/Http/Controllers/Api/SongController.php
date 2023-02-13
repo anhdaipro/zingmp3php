@@ -34,7 +34,6 @@ class SongController extends Controller
     }
     public function newsongs(Request $request){
         $offset=0;
-        
         if($request->has("offset")){
             $offset=$request->get('offset');
         }

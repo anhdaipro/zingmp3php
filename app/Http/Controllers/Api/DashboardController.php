@@ -20,7 +20,7 @@ class DashboardController extends Controller
         foreach ($songs as $song) {
             $array[] =$song->id;
         }
-        $top10=SongDashBoardResource::collection(Song::whereIn('id',$array)->get()->sortByDesc('views'));
+        $top10=SongDashBoardResource::collection(Song::whereIn('id',$array)->width(['album','likers','artists','views'])->get()->sortByDesc('views'));
         $dashboard=DB::select('select songs.id,songs.name,songs.duration,songs.artist_name,
         STR_TO_DATE(song_views.updated_at,"%Y-%m-%d %H") as day,
         count(song_views.song_id) as views from (select songs.id,name,duration,artist_name,count(views.song_id) as count from songs

@@ -33,7 +33,7 @@ class PostController extends Controller
         else if($choice=='cpop'){
             $country=4;
         }
-        $posts=Post::with('files')->whereRelation('artist','country',$country)->with(['artist','likers','comments'])->limit(10)->get();
+        $posts=Post::with(['artist','likers','comments','files'])->whereRelation('artist','country',$country)->limit(10)->get();
         $data=PostsResource::collection($posts);
         return response()->json($data);
     }

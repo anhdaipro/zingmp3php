@@ -12,7 +12,7 @@ use App\Http\Resources\ArtistsResource;
 class ArtistController extends Controller
 {
     public function artists(){
-        $artists =ArtistinfoResource::collection(Artist::with(['user','followers'])->offset(0)->limit(10)->get());
+        $artists =ArtistinfoResource::collection(Artist::with(['user','followers','songs'])->offset(0)->limit(10)->get());
         return response()->json($artists);
     }
     public function artist($slug){
