@@ -39,7 +39,7 @@ class SongController extends Controller
         }
         $newsongs=Song::with(['album','likers','artists'])->where('created_at','>',date("Y-m-d",strtotime("-30 day")));
         $count=$newsongs->count();
-        $songs=$newsongs->offset($offset)->limit(20)->get();
+        $songs=$newsongs->offset($offset)->limit(12)->get();
         if($request->has('filter')){
             $country=1;
             if($request->get('filter')=='vpop'){
