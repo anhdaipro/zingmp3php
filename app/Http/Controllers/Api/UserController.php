@@ -56,7 +56,7 @@ class UserController extends Controller
         $username=$request->get('username');
         $email=$request->get('email');
         $password=$request->get('password');
-        $avatar=$request->file('avatar');
+        $avatar=$request->cloudinary()->upload($request->file('avatar')->getRealPath())->getSecurePath();
         $data=[];
         $users=User::where([['social_id',$social_id],['provider',$provider]]);
         if ($users->exists()){

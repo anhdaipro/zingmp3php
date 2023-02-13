@@ -43,7 +43,7 @@ Route::post('v1/song/{id}', [SongController::class,'actionsong']);
 Route::get('v1/streaming/{id}', [SongController::class,'get_streaming']);
 Route::get('v1/lyric', [SongController::class,'get_lyrics']);
 Route::get('v1/user/songs', [SongController::class,'songuser']);
-Route::post('v1/songs/update', [SongController::class,'update']);
+Route::post('v1/songs/update', [SongController::class,'updatelyric']);
 #video
 Route::get('v1/mv', [MvController::class,'mv']);
 Route::get('v1/listmv', [MvController::class,'listmv']);

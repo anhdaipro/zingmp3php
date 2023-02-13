@@ -81,15 +81,14 @@ class SongController extends Controller
             $song->image_cover=cloudinary()->upload($request->file('image_cover')->getRealPath())->getSecurePath();
         }
         if($request->has('genre_name')){
-            $genres=Genre::where('name',$request->get('genre_name'));
-            $genre=$genres->doesntExist()?$genre=Genre::create([
+            $genre=Genre::firstOrCreate([
                 'name'=>$request->get('genre_name'),
                 'slug'=>Str::slug($request->get('genre_name'))
-            ]):$genres->first();
+            ]);
             $song->genre_id=$genre->id;
         }
         if($request->has('album_name') && $request->get('album_name')!='undefined'){
-            $album=Album::create([
+            $album=Album::firstOrCreate([
                 'name'=>$request->get('album_name'),
                 'slug'=>Str::slug($request->get('album_name'))
             ]);
@@ -98,9 +97,8 @@ class SongController extends Controller
         $song->save();
         return response()->json([
             'status'=> 200,
-            'message'=> 'Song created successfully',
-           
-        ]);
+            'message'=> 'Song created successfully',  
+            ]);
         }
         catch (\Exception $e) {
 
@@ -171,8 +169,8 @@ class SongController extends Controller
     public function get_streaming($id){
         return response()->json(Song::select('file')->find($id));
     }
-    public function get_lyrics($id){
-        return response()->json(Song::select('lyrics','sentences')->find($id));
+    public function get_lyrics(Request $request){
+        return response()->json(Song::select('lyrics','sentences')->find($request->get('id')));
     }
     public function songuser(Request $request){
         try{
@@ -214,6 +212,25 @@ class SongController extends Controller
         return response()->json(['sucess'=>true]);
     }
 
+    public function updatelyric(Request $request){
+        $songs = $request->get('songs');
+        $data=[];
+        
+        foreach ($songs as  $song) {
+
+            $item=Song::where('sentences')->update(['hasKaraoke'=>1]);
+            if ($item){
+                $item->hasLyric = $song['hasLyric'];
+                $item->hasKaraoke = $song['hasKaraoke'];
+                $item->lyrics = $song['lyrics'];
+                $item->sentences= $song['sentences'];
+                $item->save();
+            }
+        }
+       
+        
+        return response()->json(['sucess'=>true]);
+    }
     /**
      * Remove the specified resource from storage.
      *
