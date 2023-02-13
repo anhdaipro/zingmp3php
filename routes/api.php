@@ -11,7 +11,7 @@ use App\Http\Controllers\Api\ArtistController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\PlaylistController;
 use App\Http\Controllers\Api\MvController;
-use App\Http\Controllers\Api\DashBoardController;
+use App\Http\Controllers\Api\DashboardController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -78,8 +78,8 @@ Route::get('v1/comments', [CommentController::class,'comments']);
 #seach
 Route::get('v1/search/item', [SearchController::class,'searchitem']);
 Route::get('v1/search', [SearchController::class,'search']);
-   
-Route::get('v1/zingchart', [DashBoardController::class,'dashboard']);
+#zingchart
+Route::get('v1/zingchart', [DashboardController::class,'dashboard']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
