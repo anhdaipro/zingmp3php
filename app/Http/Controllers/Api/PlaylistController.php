@@ -14,7 +14,7 @@ use App\Http\Resources\PlaylistsResource;
 class PlaylistController extends Controller
 {
     public function playlists(){
-        $playlists= PlaylistsResource::collection(Playlist::with(['user','songs.song'])->offset(0)->limit(10)->get());
+        $playlists= PlaylistsResource::collection(Playlist::with(['user','songs.song','likers'])->offset(0)->limit(10)->get());
         return response()->json($playlists);
     }
     public function playlist($id){
