@@ -10,7 +10,7 @@ class PlaylistSong extends Model
     use HasFactory;
     protected $table = 'playlist_songs';
     protected $fillable = ['song_id','playlist_id'];
-    public function playlists(){
+    public function playlist(){
         return $this->belongsTo(Playlist::class);
     }
     public function song(){
