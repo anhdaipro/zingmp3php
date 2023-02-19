@@ -40,6 +40,9 @@ class ArtistController extends Controller
         else{
             $name=$request->get('name');
             $description=$request->get('description');
+            $artist->name=$name;
+            $artist->description=$description;
+            $artist->save();
         }
         return response()->json(['succes'=>true]);
     }

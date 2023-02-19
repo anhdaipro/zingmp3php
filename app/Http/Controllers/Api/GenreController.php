@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Http\Resources\GenreResource;
 use App\Http\Resources\GenresResource;
 use App\Models\Genre;

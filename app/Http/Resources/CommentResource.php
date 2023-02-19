@@ -3,9 +3,6 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Models\CommentDisliker;
-use APp\Models\CommentLiker;
-use App\Http\Controller\Api\UserController;
 class CommentResource extends JsonResource
 {
     /**

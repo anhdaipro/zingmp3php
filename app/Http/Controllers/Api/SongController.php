@@ -8,6 +8,8 @@ use App\Models\View;
 use App\Models\SongShare;
 use App\Models\Comment;
 use App\Models\SongLiker;
+use App\Models\SongArtist;
+use App\Models\Artist;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
@@ -97,8 +99,8 @@ class SongController extends Controller
         $song->save();
         $artist= Artist::firstOrCreate(
             ['user_id'=>auth()->user()->id],
-            ['slug' => Str::slug($request.get('artist_name'))],
-            ['name' => $request.get('artist_name')]
+            ['slug' => Str::slug($request->get('artist_name'))],
+            ['name' => $request->get('artist_name')]
         );
         SongArtist::firstOrCreate(
             ['song_id' => $song->id],

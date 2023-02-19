@@ -57,7 +57,8 @@ class CommentController extends Controller
             $data=['liked'=>$disliked,'count_dislikers'=>$comment->dislikers->count()];
         }
         else if ($action=='reply'){
-            $commnentchild=Comment::create(['parent_id'=>$id,'body'=>$body,'user_id'=>$user_id]);
+            $body=$request->get('body');
+            $commentchild=Comment::create(['parent_id'=>$id,'body'=>$body,'user_id'=>$user_id]);
             $data=['id'=>$commentchild->id];
         }
         return response()->json($data);

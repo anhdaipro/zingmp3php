@@ -6,11 +6,12 @@ use App\Models\PlaylistSong;
 use App\Models\PlaylistLiker;
 use App\Models\Comment;
 use App\Models\Artist;
-use App\Models\SharePlaylist;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Resources\PlaylistResource;
 use App\Http\Resources\PlaylistsResource;
+use App\Models\PlaylistShare;
+
 class PlaylistController extends Controller
 {
     public function playlists(){
@@ -75,7 +76,7 @@ class PlaylistController extends Controller
             $data[]=$comment->attributesToArray();
         }
         else{
-            SharePlaylist::create(['user_id'=>$user_id,'provider'=>$request->get('provider'),'playlist_id'=>$id]);
+            PlaylistShare::create(['user_id'=>$user_id,'provider'=>$request->get('provider'),'playlist_id'=>$id]);
         }
         return response()->json($data);
     }

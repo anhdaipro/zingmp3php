@@ -10,6 +10,7 @@ use App\Models\Mv;
 use App\Models\MvView;
 use App\Models\MvLiker;
 use App\Models\MvShare;
+use App\Models\Comment;
 class MvController extends Controller
 {
     public function mv(Request $request){

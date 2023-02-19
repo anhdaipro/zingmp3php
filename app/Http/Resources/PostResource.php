@@ -14,8 +14,8 @@ class PostResource extends PostsResource
      */
     public function toArray($request)
     {
-        $parent parent::toArray($request);
+        $parent =parent::toArray($request);
         $parent['comment']=CommentResource::collection($this->comments);
-        return $parrent;
+        return $parent;
     }
 }

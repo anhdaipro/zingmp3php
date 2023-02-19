@@ -10,6 +10,7 @@ use App\Models\PostLiker;
 use App\Models\Comment;
 use App\Models\PostShare;
 use App\Http\Resources\PostsResource;
+use App\Http\Resources\PostResource;
 use App\Http\Resources\CommentResource;
 class PostController extends Controller
 {
@@ -92,17 +93,15 @@ class PostController extends Controller
         $data=['sucess'=>true];
         if ($action=='update'){
             $caption=$request->get('caption');
-            $file=$request->file('file');
             $file_id=$request->get('file_id');
-            $file_preview=$request.file('file_preview');
             $post->caption=$caption;
             $post->save();
-            $filepost=MediaPost::find($file_id);
-            if ($file){
-                $filepost->file=$file->store('api');
+            $filepost=PostMedia::find($file_id);
+            if ($request->has('file')){
+                $filepost->file=cloudinary()->uploadFile($request->file('file')->getRealPath())->getSecurePath();
             }
-            if ($file_preview){
-                $filepost->file_preview=$file_preview->store('api');
+            if ($request->has('file_preview')){
+                $filepost->file_preview=cloudinary()->upload($request->file('file_preview')->getRealPath())->getSecurePath();
             }
             $filepost->save();
         }

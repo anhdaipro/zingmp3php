@@ -6,10 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Resources\UserResource;
-use Illuminate\Support\Facades\Auth;
 use Validator;
-use Illuminate\Support\Facades\Hash;
-use Tymon\JWTAuth\Exceptions\JWTException;
 class UserController extends Controller
 {
     
@@ -46,7 +43,7 @@ class UserController extends Controller
             return $this->createNewToken($token);
         }
         catch(\Exception $e){
-            return response()->json(['error'=>true,'message'->e.getMessage()]);
+            return response()->json(['error'=>true,'message'=>$e->getMessage()]);
         }
     }
     public function logout()
